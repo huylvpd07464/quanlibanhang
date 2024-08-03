@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<!-- main content -->
+		<div class="content">
+			<h1>
+				Make Your Home <br> Modern Design.
+			</h1>
+			<p>Welcome to my shop</p>
+			<div id="btn1">
+				<a th:href="@{/products}" class="btn btn-primary">Shop Now</a>
+			</div>
+		</div>
+
+		<!-- card3 -->
+		<div class="container">
+			<h3 class="text-center" style="margin-top: 50px;">TREANDLY
+				PRODUCTS</h3>
+			<div class="row" style="margin-top: 50px;">
+				<div class="col-md-3 py-3 py-md-0"
+					th:each="item, iterStat : ${pages.content}">
+					<div class="card" id="c">
+						<img th:src="@{'/uploads/' + ${item.imageUrl}}" alt=""
+							class="card image-top">
+						<div class="card-body">
+							<h3 class="card-titel text-center" th:text="${item.name}"></h3>
+							<p class="card-text text-center" th:text="'$' + ${item.price}"></p>
+							<div id="btn3">
+								<a th:href="@{/shoppingcart/order/{id}(id=${item.id})}"
+									class="btn">Shop Now</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- card3 -->
+
+		<!-- about -->
+		<div class="container">
+			<h1 class="text-center" style="margin-top: 50px;">ABOUT</h1>
+			<div class="row" style="margin-top: 50px;">
+				<div class="col-md-6 py-3 py-md-0">
+					<div class="card">
+						<img src="/image/about.png" alt="">
+					</div>
+				</div>
+				<div class="col-md-6 py-3 py-md-0">
+					<p>If the customer is very smart, he or she will be able to
+						achieve the desired result. Of labors, we may often lead him, as
+						if the birth of a soul is neither blessed nor freed, but who is
+						the smallest? Let the chosen man flee from the choice of which no
+						one takes any pleasure in the duties or training of the body,
+						which he is bound to by the flattery of his being, as if of the
+						mind for them! The times of the gentleness of choosing great
+						pleasures, as no one has said, and resulting in the distinction
+						which must be assumed by the inventor, we accuse nothing of just
+						hatred, for free error, for either, but with the rejection of the
+						present. We may be blinded by the results, but he is actually in
+						their pains. Get the whole life of the corrupt or run away from
+						the consequences. By enduring the times of flight and pain, in
+						them, the pleasures of the right, the choice of those who often
+						come out of it. If you look at him, he does not know that he
+						avoids the pleasures of the corrupt, he repels some of the
+						smallest things, as if they were born, to be refused or to us.
+						With convenience, he will rebuke others by rejecting them, and
+						here he will be freed from the consequences of the body of the
+						accusers. It is great that she herself but this one.</p>
+				</div>
+			</div>
+		</div>
+		<!-- about -->
+	</div>
+
+</body>
+
+</html>

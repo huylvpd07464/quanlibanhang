@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminLayout}">
+<head>
+
+<body>
+    <main id="main" class="main" layout:fragment="content">
+        <h1 class="mb-4">List of Accounts</h1>
+        <a th:href="@{/admin/accounts/newOrEdit}" class="btn btn-primary mb-3">New Account</a>
+        <hr>
+        <div th:if="${message != null}" class="alert alert-info">
+            <h3 th:text="${message}"></h3>
+        </div>
+        <form th:action="@{/admin/accounts/findByKeyword}" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="keyword" placeholder="Search" aria-label="Search"
+                    aria-describedby="search-addon" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User name</th>
+                    <th>Password</th>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>Photo</th>
+                    <th>Date created</th>
+                    <th>Date updated</th>
+                    <th>Status</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${pages.content}">
+                    <td th:text="${item.username}"></td>
+                    <td th:text="${item.password}"></td>
+                    <td th:text="${item.fullname}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${item.photo}"></td>
+                    <td th:text="${item.createdDate}"></td>
+                    <td th:text="${item.updatedDate}"></td>
+                    <td>
+				        <div th:switch="${item.status.toString()}">
+				            <span th:case="'InActivated'" class="badge badge-danger">InActivated</span>
+				            <span th:case="'Activated'" class="badge badge-success">Activated</span>
+				            <span th:case="'Pending'" class="badge badge-secondary">Pending</span>
+				        </div>
+				    </td>
+				    <td>
+				        <div th:switch="${item.role.toString()}">
+				            <span th:case="'Admin'" class="badge badge-success">Admin</span>
+				            <span th:case="'User'" class="badge badge-success">User</span>
+				            <span th:case="'Moderator'" class="badge badge-secondary">Moderator</span>
+				            <span th:case="'Manager'" class="badge badge-secondary">Manager</span>
+				        </div>
+				    </td>
+                    <td>
+                        <a th:href="@{/admin/accounts/newOrEdit/{username}(username=${item.username})}" class="btn btn-sm btn-warning">Edit</a>
+                        <a th:href="@{/admin/accounts/delete/{username}(username=${item.username})}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}">
+                        <a class="page-link" th:href="@{/admin/accounts(page=${i},size=${pages.size},sort=${sort})}"
+                            th:text="${i + 1}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <hr>
+        <form th:action="@{/admin/accounts}" method="get" class="form-inline mt-3">
+            <div class="form-group mr-2">
+                <label for="sort" class="mr-2">Sort by:</label>
+                <select name="sort" id="sort" class="form-control">
+                    <option value="username">User name</option>
+                    <option value="fullname">Full name</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </form>
+    </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

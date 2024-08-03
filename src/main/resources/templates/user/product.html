@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{user/layout}">
+
+<head>
+    <style>
+        @media (max-width: 767.98px) {
+            .border-sm-start-none {
+                border-left: none !important;
+            }
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <section style="background-color: #eee;" layout:fragment="content">
+    	<form th:action="@{/products/findByKeyword}" method="get" class="row justify-content-center py-1">
+			<div class="input-group rounded col-md-12 col-xl-9">
+			  <input type="text" class="form-control" name="keyword" placeholder="Search" aria-label="Search"
+                    aria-describedby="search-addon" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+			</div>
+		</form>
+        <div class="p-md-3 ">
+            <div class="row justify-content-center mb-3" th:each="item, iterStat : ${pages.content}">
+                <div class="col-md-12 col-xl-10">
+                    <div class="card shadow-0 border rounded-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                        <img th:src="@{'/uploads/' + ${item.imageUrl}}"
+                                            class="w-100" />
+                                        <a href="#!">
+                                            <div class="hover-overlay">
+                                                <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                    <h5 th:text="${item.name}"></h5>
+                                    <div class="d-flex flex-row">
+                                        <span th:text="${item.quantity}"></span>
+                                    </div>
+                                    <div class="mt-1 mb-0 text-muted small">
+                                        <span>100% cotton</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Light weight</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Best finish<br /></span>
+                                    </div>
+                                    <div class="mb-2 text-muted small">
+                                        <span>Unique design</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>For men</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Casual<br /></span>
+                                    </div>
+                                    <p class="text-truncate mb-4 mb-md-0">
+                                        There are many variations of passages of Lorem Ipsum available, but the
+                                        majority have suffered alteration in some form, by injected humour, or
+                                        randomised words which don't look even slightly believable.
+                                    </p>
+                                </div>
+                                <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                                    <div class="d-flex flex-row align-items-center mb-1">
+                                        <h4 class="mb-1 me-1">$</h4><h4 class="mb-1 me-1" th:text="${discountedPrices[iterStat.index]}"></h4>
+                                        <span class="text-danger">$<s th:text="${item.price}"></s></span>
+                                    </div>
+                                    <h6 class="text-success">Free shipping</h6>
+                                    <div class="d-flex flex-column mt-4">
+									    <a class="btn btn-primary btn-sm" th:href="@{/products/productDetail/{id}(id=${item.id})}" role="button">Details</a>
+									    <a class="btn btn-outline-primary btn-sm mt-2" th:href="@{/shoppingcart/order/{id}(id=${item.id})}" role="button">Add to cart</a>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        	<hr>
+	        <div class="row justify-content-center mb-3">
+	            <nav aria-label="Page navigation example">
+	                <ul class="pagination">
+	                    <li class="page-item" th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}">
+	                        <a class="page-link" th:href="@{/products(page=${i},size=${pages.size},sort=${sort})}"
+	                            th:text="${i + 1}"></a>
+	                    </li>
+	                </ul>
+	            </nav>
+	        </div>
+	        <hr>
+        </div>
+    </section>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminlayout}">
+<head>
+
+</head>
+<body>
+	<main id="main" class="main" layout:fragment="content">
+		<h1 th:if="${account.username != null}">Edit Product</h1>
+		<h1 th:if="${account.username == null}">New Product</h1>
+
+		<a class="btn btn-primary mb-3" th:href="@{/admin/accounts}">List of accounts</a>
+		<hr />
+		<form th:action="@{/admin/accounts/saveOrUpdate}" method="post"
+			th:object="${account}" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="username">User name:</label> 
+				<input type="text" class="form-control" id="username" placeholder="User name"
+					th:field="*{username}"/>
+				<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="password">Password:</label> 
+				<input type="password" class="form-control" id="password" placeholder="Password"
+					th:field="*{password}" />
+				<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="fullname">Full name:</label> 
+				<input type="text" class="form-control" id="fullname" placeholder="Full name"
+					th:field="*{fullname}" />
+				<p th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}" class="error"></p>
+			</div>
+			
+			<div class="form-group">
+				<label for="email">Email:</label> 
+				<input type="text" class="form-control" id="email" placeholder="Email"
+					th:field="*{email}" />
+				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></p>
+			</div>
+
+			<div class="form-group">
+				<label for="status">Status:</label> 
+				<select class="form-control" id="status" th:field="*{status}">
+					<option th:each="state : ${T(edu.poly.model.AccountStatus).values()}"
+						th:value="${state}" th:text="${state}"></option>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label for="role">Role:</label> 
+				<select class="form-control" id="role" th:field="*{role}">
+					<option th:each="state : ${T(edu.poly.model.AccountRole).values()}"
+						th:value="${state}" th:text="${state}"></option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="image">Image:</label> 
+				<input type="file" class="form-control-file" id="image" name="image" />
+				<div th:if="${account.photo != null}">
+					<img th:src="@{'/uploads/accountimage/' + ${account.photo}}" alt="Account Image" class="img-thumbnail mt-2" width="150" height="150"/>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-success" th:if="${account.username == null}">Save</button>
+			<button type="submit" class="btn btn-primary" th:if="${account.username != null}">Update</button>
+
+			<ul class="mt-3">
+				<li th:each="error : ${#fields.allErrors()}" th:text="${error}" class="text-danger"></li>
+			</ul>
+		</form>
+	</main>
+</body>
+</html>

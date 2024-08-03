@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminlayout}">
+<head>
+    <style>
+        .pagination span a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+        }
+
+        .pagination span a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="main" class="main" layout:fragment="content">
+        <h1 class="mb-4">List of Categories</h1>
+        <a th:href="@{/admin/categories/newOrEdit}" class="btn btn-primary mb-3">New Category</a>
+        <div th:if="${message != null}" class="alert alert-info">
+            <h3 th:text="${message}"></h3>
+        </div>
+        <div class="border rounded p-4">
+            <section class="w-100">
+                <form th:action="@{/admin/categories/findByKeyword}" method="get" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="keyword" placeholder="Search" aria-label="Search"
+                            aria-describedby="search-addon" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Category Id</th>
+                            <th>Category Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item, iterStat : ${pages.content}">
+                            <td th:text="${iterStat.index + 1}"></td>
+                            <td th:text="${item.id}"></td>
+                            <td th:text="${item.name}"></td>
+                            <td>
+                                <a th:href="@{/admin/categories/newOrEdit/{id}(id=${item.id})}" class="btn btn-warning btn-sm">Edit</a>
+                                <a th:href="@{/admin/categories/delete/{id}(id=${item.id})}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr />
+                <div class="pagination">
+                    Pages:
+                    <span th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}">
+                        <a th:href="@{/admin/categories(page=${i},size=${pages.size},sort=${sort})}" th:text="${i + 1}"></a>
+                    </span>
+                </div>
+                <form th:action="@{/admin/categories}" method="get" class="form-inline mt-3">
+                    <div class="form-group mr-2">
+                        <label for="sort" class="mr-2">Sort by:</label>
+                        <select name="sort" id="sort" class="form-control">
+                            <option value="id">Category ID</option>
+                            <option value="name">Name</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+</body>
+
+</html>

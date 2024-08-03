@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminlayout}">
+<head>
+
+<body>
+    <main id="main" class="main" layout:fragment="content">
+        <h2 class="mb-4">Add New Category</h2>
+        <a class="btn btn-primary mb-3" th:href="@{/admin/categories}">List of accounts</a>
+		<hr />
+        <form th:action="@{/admin/categories/saveOrUpdate}" method="post" th:object="${category}">
+            <div class="form-group">
+                <label for="categoryId">Category Id</label>
+                <input type="number" class="form-control" id="categoryId" placeholder="Category Id" th:field="*{id}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" th:field="*{name}">
+            	<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:class="${#fields.hasErrors('name')}? 'error' : ''"></p>
+            </div>
+            <button type="submit" class="btn btn-primary" th:if="${category.id==null}">Submit</button>
+            <button type="submit" class="btn btn-primary" th:if="${category.id!=null}">Update</button>
+        </form>
+    </main>
+</body>
+
+</html>

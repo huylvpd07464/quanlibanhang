@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminlayout}">
+<head>
+</head>
+
+<body>
+    <main id="main" class="main" layout:fragment="content">
+        <h1 class="mb-4">List of Products</h1>
+        <a th:href="@{/admin/products/newOrEdit}" class="btn btn-primary mb-3">New Product</a>
+        <hr>
+        <div th:if="${message != null}" class="alert alert-info">
+            <h3 th:text="${message}"></h3>
+        </div>
+        <form th:action="@{/admin/products/findByKeyword}" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="keyword" placeholder="Search" aria-label="Search"
+                    aria-describedby="search-addon" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${pages.content}">
+                    <td th:text="${item.category.name}"></td>
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.price}"></td>
+                    <td th:text="${item.discount}"></td>
+                    <td th:text="${item.imageUrl}"></td>
+                    <td>
+				        <div th:switch="${item.status.toString()}">
+				            <span th:case="'Available'" class="badge badge-success">Available</span>
+				            <span th:case="'OutOfOrder'" class="badge badge-danger">Out of Order</span>
+				            <span th:case="'Unavailable'" class="badge badge-secondary">Unavailable</span>
+				        </div>
+				    </td>
+                    <td>
+                        <a th:href="@{/admin/products/newOrEdit/{id}(id=${item.id})}" class="btn btn-sm btn-warning">Edit</a>
+                        <a th:href="@{/admin/products/delete/{id}(id=${item.id})}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}">
+                        <a class="page-link" th:href="@{/admin/products(page=${i},size=${pages.size},sort=${sort})}"
+                            th:text="${i + 1}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <hr>
+        <form th:action="@{/admin/products}" method="get" class="form-inline mt-3">
+            <div class="form-group mr-2">
+                <label for="sort" class="mr-2">Sort by:</label>
+                <select name="sort" id="sort" class="form-control">
+                    <option value="id">Product ID</option>
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                    <option value="quantity">Quantity</option>
+                    <option value="discount">Discount</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </form>
+    </main>
+</body>
+
+</html>

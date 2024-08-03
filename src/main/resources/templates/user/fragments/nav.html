@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+</head>
+
+<body>
+    <div th:fragment="nav">
+        <!-- main content -->
+        <div class="main-content">
+            <nav class="navbar navbar-expand-md" id="navbar-color">
+                <div class="container">
+                    <!-- Toggler/collapsibe Button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#collapsibleNavbar">
+                        <span><i><img src="./image/menu.png" alt="" width="30px"></i></span>
+                    </button>
+
+                    <!-- Navbar links -->
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link"  th:href="@{/account/homepage}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/products}">Shop</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/account/contact}">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/account/about}">About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- main content -->
+    </div>
+</body>
+
+</html>

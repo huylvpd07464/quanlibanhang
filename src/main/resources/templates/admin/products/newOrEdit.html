@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/adminlayout}">
+<head>
+	<style>
+	.error {
+		color: red;
+	}
+	</style>
+</head>
+<body>
+	<main id="main" class="main" layout:fragment="content">
+		<h1 th:if="${product.id != null}">Edit Product</h1>
+		<h1 th:if="${product.id == null}">New Product</h1>
+
+		<a class="btn btn-primary mb-3" th:href="@{/admin/products}">List of products</a>
+		<hr />
+		<form th:action="@{/admin/products/saveOrUpdate}" method="post"
+			th:object="${product}" enctype="multipart/form-data">
+			<div th:if="${product.id != null}" class="form-group">
+				<label for="productId">Product ID:</label> 
+				<input type="text" class="form-control" id="productId" placeholder="Product Id"
+					th:field="*{id}" readonly />
+			</div>
+
+			<div class="form-group">
+				<label for="category">Category:</label> 
+				<select class="form-control" id="category" th:field="*{category.id}">
+					<option th:each="item : ${categories}" th:value="${item.id}" th:text="${item.name}"></option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="name">Name:</label> 
+				<input type="text" class="form-control" id="name" placeholder="Name"
+					th:field="*{name}" />
+				<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></p>
+			</div>
+
+			<div class="form-group">
+				<label for="price">Price:</label> 
+				<input type="number" class="form-control" id="price" placeholder="Price"
+					th:field="*{price}" />
+				<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error"></p>
+			</div>
+
+			<div class="form-group">
+				<label for="quantity">Quantity:</label> 
+				<input type="number" class="form-control" id="quantity" placeholder="Quantity"
+					th:field="*{quantity}" />
+				<p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="error"></p>
+			</div>
+
+			<div class="form-group">
+				<label for="discount">Discount:</label> 
+				<input type="number" class="form-control" id="discount" placeholder="Discount"
+					th:field="*{discount}" />
+				<p th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}" class="error"></p>
+			</div>
+
+			<div class="form-group">
+				<label for="status">Status:</label> 
+				<select class="form-control" id="status" th:field="*{status}">
+					<option th:each="state : ${T(edu.poly.model.ProductStatus).values()}"
+						th:value="${state}" th:text="${state}"></option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="image">Image:</label> 
+				<input type="file" class="form-control-file" id="image" name="image" />
+				<div th:if="${product.imageUrl != null}">
+					<img th:src="@{'/uploads/' + ${product.imageUrl}}" alt="Product Image" class="img-thumbnail mt-2" width="150" height="150"/>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-success" th:if="${product.id == null}">Save</button>
+			<button type="submit" class="btn btn-primary" th:if="${product.id != null}">Update</button>
+
+			<ul class="mt-3">
+				<li th:each="error : ${#fields.allErrors()}" th:text="${error}" class="text-danger"></li>
+			</ul>
+		</form>
+	</main>
+</body>
+</html>
